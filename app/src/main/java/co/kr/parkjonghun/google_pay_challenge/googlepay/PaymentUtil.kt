@@ -1,8 +1,12 @@
 package co.kr.parkjonghun.google_pay_challenge.googlepay
 
+import android.content.Context
+import co.kr.parkjonghun.google_pay_challenge.googlepay.GooglePayConstant.PAYMENTS_ENVIRONMENT
 import co.kr.parkjonghun.google_pay_challenge.googlepay.config.CardAuthMethod
 import co.kr.parkjonghun.google_pay_challenge.googlepay.config.CardNetwork
 import co.kr.parkjonghun.google_pay_challenge.googlepay.config.gateway.Gateway
+import com.google.android.gms.wallet.PaymentsClient
+import com.google.android.gms.wallet.Wallet
 import org.json.JSONObject
 
 object PaymentUtil {
@@ -13,6 +17,15 @@ object PaymentUtil {
 
     private val cardPaymentMethod = cardPaymentInfo()
         .put("tokenizationSpecification", tokenGatewayInfo(Gateway.ACPay))
+
+    // Google Pay로 결제를 처리하기 위해 Google Wallet과 상호작용하는 [PaymentsClient] 생성.
+    fun createPaymentsClient(context: Context): PaymentsClient {
+        val walletOptions = Wallet.WalletOptions.Builder()
+            .setEnvironment(PAYMENTS_ENVIRONMENT)
+            .build()
+
+        return Wallet.getPaymentsClient(context, walletOptions)
+    }
 
     // 결제제공업체의 결제토큰 정보.
     private fun tokenGatewayInfo(

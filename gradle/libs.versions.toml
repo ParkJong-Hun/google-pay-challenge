@@ -9,6 +9,7 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.04.01"
 gms = "19.4.0"
+coroutines = "1.10.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -28,6 +29,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 # Wallet이라고 써있지만, Google Pay.
 googlepay = { module = "com.google.android.gms:play-services-wallet", version.ref = "gms" }
+
+coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-cor", version.ref = "coroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

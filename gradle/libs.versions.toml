@@ -29,6 +29,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 # Wallet이라고 써있지만, Google Pay.
 googlepay = { module = "com.google.android.gms:play-services-wallet", version.ref = "gms" }
+googlepay-button = { module = "com.google.pay.button:compose-pay-button", version = "1.1.0" }
 
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-cor", version.ref = "coroutines" }
 coroutines-playservices = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }

@@ -4,14 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import co.kr.parkjonghun.google_pay_challenge.googlepay.FetchCanUseGooglePayUseCase
+import co.kr.parkjonghun.google_pay_challenge.googlepay.GooglePayUtil
 import co.kr.parkjonghun.google_pay_challenge.ui.theme.GooglepaychallengeTheme
+import com.google.pay.button.PayButton
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,28 +22,20 @@ class MainActivity : ComponentActivity() {
         setContent {
             GooglepaychallengeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    Column(modifier = Modifier.padding(innerPadding)) {
+                        PayButton(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            onClick = FetchCanUseGooglePayUseCase(),
+                            allowedPaymentMethods = GooglePayUtil.isReadyForRequest().toString()
+                        )
+                    }
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GooglepaychallengeTheme {
-        Greeting("Android")
+    private fun requestPayment() {
+        GooglePayUtil.
     }
 }

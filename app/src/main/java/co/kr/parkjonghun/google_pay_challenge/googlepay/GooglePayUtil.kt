@@ -1,23 +1,29 @@
 package co.kr.parkjonghun.google_pay_challenge.googlepay
 
 import android.content.Context
-import co.kr.parkjonghun.google_pay_challenge.googlepay.GooglePayConstant.PAYMENTS_ENVIRONMENT
+import co.kr.parkjonghun.google_pay_challenge.googlepay.config.GooglePayConstant.PAYMENTS_ENVIRONMENT
 import co.kr.parkjonghun.google_pay_challenge.googlepay.config.CardAuthMethod
 import co.kr.parkjonghun.google_pay_challenge.googlepay.config.CardNetwork
+import co.kr.parkjonghun.google_pay_challenge.googlepay.config.GooglePayConstant
 import co.kr.parkjonghun.google_pay_challenge.googlepay.config.gateway.Gateway
 import com.google.android.gms.wallet.PaymentsClient
 import com.google.android.gms.wallet.Wallet
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 
-object PaymentUtil {
+object GooglePayUtil {
     // 내 앱에서 사용할 Google Pay API 버전 정보.
     private val apiVersion = JSONObject()
         .put("apiVersion", 2)
         .put("apiVersionMinor", 0)
 
-    private val cardPaymentMethod = cardPaymentInfo()
-        .put("tokenizationSpecification", tokenGatewayInfo(Gateway.ACPay))
+    private val allowedPaymentMethod = getAllowedPaymentMethod()
+        .put("tokenizationSpecification", getTokenizationSpecification(Gateway.ACPay))
+
+    // 상점 정보.
+    private val merchantInfo = JSONObject()
+        .put("merchantName", "Jonghun cafe")
 
     /**
      * Google Pay로 결제를 처리하기 위해 Google Wallet과 상호작용하는 [PaymentsClient] 생성.
@@ -32,13 +38,31 @@ object PaymentUtil {
     }
 
     /**
-     * @return 결제 요청 JSON 생성.
+     * @return API 정보 + 결제 요청 수단 JSON 생성. 에러시 null.
      */
-    fun createPayRequestOrThrow(): JSONObject =
-        apiVersion.put("allowPaymentMethod", JSONArray().put(cardPaymentInfo()))
+    fun isReadyForRequest(): JSONObject? = try {
+        apiVersion.put("allowPaymentMethod", JSONArray().put(getAllowedPaymentMethod()))
+    } catch (e: JSONException) {
+        null
+    }
+
+    /**
+     * @return 결제 요청 정보.
+     */
+    fun paymentDataRequest(priceLabel: String): JSONObject =
+        apiVersion
+            .put("allowedPaymentMethods", allowedPaymentMethod)
+            .put("transactionInfo", getTransactionInfo(priceLabel))
+            .put("merchantInfo", merchantInfo)
+            .put("shippingAddressRequired", true)
+            .put(
+                "shippingAddressParameters", JSONObject()
+                    .put("phoneNumberRequired", false)
+                    .put("allowedCountryCodes", JSONArray(listOf("KR")))
+            )
 
     // 결제제공업체의 결제토큰 정보.
-    private fun tokenGatewayInfo(
+    private fun getTokenizationSpecification(
         gateway: Gateway,
     ): JSONObject {
         return JSONObject().apply {
@@ -51,7 +75,7 @@ object PaymentUtil {
     }
 
     // 카드 지불수단 정보.
-    private fun cardPaymentInfo(): JSONObject =
+    private fun getAllowedPaymentMethod(): JSONObject =
         JSONObject()
             .put("type", "CARD")
 
@@ -69,4 +93,12 @@ object PaymentUtil {
                             .put("format", "FULL")
                     )
             )
+
+    // 거래 정보.
+    private fun getTransactionInfo(price: String): JSONObject =
+        JSONObject()
+            .put("totalPrice", price)
+            .put("totalPriceStatus", "FINAL")
+            .put("countryCode", GooglePayConstant.COUNTRY_CODE)
+            .put("currencyCode", GooglePayConstant.CURRENCY_CODE)
 }

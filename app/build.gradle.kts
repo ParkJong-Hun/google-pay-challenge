@@ -58,6 +58,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.googlepay)
+    implementation(libs.googlepay.button)
     implementation(libs.coroutines)
     implementation(libs.coroutines.playservices)
 }

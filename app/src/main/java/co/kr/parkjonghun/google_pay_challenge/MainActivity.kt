@@ -72,7 +72,8 @@ class MainActivity : ComponentActivity() {
             .fromJson(GooglePayUtil.getPaymentDataRequest(price).toString())
         lifecycleScope.launch {
             val client = GooglePayUtil.createPaymentsClient(this@MainActivity)
-            paymentLauncher.launch(client.loadPaymentData(request))
+            val task = client.loadPaymentData(request)
+            paymentLauncher.launch(task.awaitTask())
         }
     }
 }

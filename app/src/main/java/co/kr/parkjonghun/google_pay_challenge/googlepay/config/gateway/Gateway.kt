@@ -13,7 +13,8 @@ enum class Gateway(
 ) {
     ACPay(
         gateway = "acpay",
-        gatewayExtraInfo = GatewayExtraInfo.Default(TODO("puy my gateway merchant id")),
+        // FIXME: puy real gateway merchant id
+        gatewayExtraInfo = GatewayExtraInfo.Default("test"),
     ),
     ;
 

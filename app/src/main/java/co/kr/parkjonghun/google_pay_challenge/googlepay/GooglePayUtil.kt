@@ -49,7 +49,7 @@ object GooglePayUtil {
     /**
      * @return 결제 요청 정보.
      */
-    fun paymentDataRequest(priceLabel: String): JSONObject =
+    fun getPaymentDataRequest(priceLabel: String): JSONObject =
         apiVersion
             .put("allowedPaymentMethods", allowedPaymentMethod)
             .put("transactionInfo", getTransactionInfo(priceLabel))

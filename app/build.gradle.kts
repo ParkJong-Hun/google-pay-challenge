@@ -59,4 +59,5 @@ dependencies {
 
     implementation(libs.googlepay)
     implementation(libs.coroutines)
+    implementation(libs.coroutines.playservices)
 }

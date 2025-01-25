@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "co.kr.parkjonghun.google_pay_challenge"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "co.kr.parkjonghun.google_pay_challenge"
         minSdk = 30
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 

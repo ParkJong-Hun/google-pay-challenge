@@ -6,12 +6,23 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import co.kr.parkjonghun.google_pay_challenge.googlepay.GooglePayUtil
 import co.kr.parkjonghun.google_pay_challenge.ui.theme.GooglepaychallengeTheme
@@ -50,11 +61,41 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GooglepaychallengeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(modifier = Modifier.padding(innerPadding)) {
+                Scaffold { innerPadding ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                            .padding(20.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Text(
+                                "Jonghun Cafe",
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            Spacer(Modifier.size(20.dp))
+                            Card {
+                                Image(
+                                    modifier = Modifier.size(100.dp),
+                                    painter = painterResource(R.drawable.img_americano),
+                                    contentDescription = "americano"
+                                )
+                                Text(
+                                    "Premium Americano",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                )
+                                Text("₩ 49,900")
+                            }
+                        }
                         PayButton(
                             modifier = Modifier
-                                .fillMaxWidth(),
+                                .fillMaxWidth()
+                                .align(Alignment.BottomCenter),
                             onClick = {
                                 requestPayment()
                             },
